@@ -28,10 +28,26 @@ public class User {
     @Column(name = "email", length = 512, unique = true)
     private String email;
 
-    public User(String loginId, String username, String password, String email) {
+    @Column(name = "profile_image_url", length = 512)
+    private String profileImageUrl;
+
+    @Column(name = "type", length = 20)
+    @Enumerated(EnumType.STRING)
+    private ProviderType providerType;
+
+    public User(String loginId, String username, String email, String profileImageUrl, ProviderType providerType) {
         this.loginId = loginId;
         this.username = username;
-        this.password = password;
         this.email = email;
+        this.profileImageUrl = profileImageUrl;
+        this.providerType = providerType;
+    }
+
+    public void updateEmail(String email) {
+        this.email = email;
+    }
+
+    public void updateProfileImageUrl(String imageUrl) {
+        this.profileImageUrl = imageUrl;
     }
 }

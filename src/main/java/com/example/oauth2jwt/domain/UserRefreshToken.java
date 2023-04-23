@@ -17,13 +17,17 @@ public class UserRefreshToken {
     private Long id;
 
     @Column(name = "user_id")
-    private Long userId;
+    private String userId;
 
     @Column(name = "refresh_token", length = 256)
     private String refreshToken;
 
-    public UserRefreshToken(Long userId, String refreshToken) {
+    public UserRefreshToken(String userId, String refreshToken) {
         this.userId = userId;
+        this.refreshToken = refreshToken;
+    }
+
+    public void updateRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
     }
 }
