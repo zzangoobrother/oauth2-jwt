@@ -16,10 +16,15 @@ import java.util.Map;
 public class UserPrincipal implements OAuth2User, UserDetails, OidcUser {
     private final String email;
     private final String password;
+    private Map<String, Object> attributes;
 
     public UserPrincipal(String email, String password) {
         this.email = email;
         this.password = password;
+    }
+
+    public void setAttributes(Map<String, Object> attributes) {
+        this.attributes = attributes;
     }
 
     @Override
@@ -69,7 +74,7 @@ public class UserPrincipal implements OAuth2User, UserDetails, OidcUser {
 
     @Override
     public Map<String, Object> getAttributes() {
-        return null;
+        return attributes;
     }
 
     @Override
@@ -84,5 +89,11 @@ public class UserPrincipal implements OAuth2User, UserDetails, OidcUser {
 
     public static UserPrincipal of(User user) {
         return new UserPrincipal(user.getEmail(), user.getPassword());
+    }
+
+    public static UserPrincipal of(User user, Map<String, Object> attributes) {
+        UserPrincipal userPrincipal = of(user);
+        userPrincipal.setAttributes(attributes);
+        return userPrincipal;
     }
 }

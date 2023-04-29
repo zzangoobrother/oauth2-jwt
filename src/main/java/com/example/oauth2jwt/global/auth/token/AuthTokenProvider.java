@@ -9,7 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 
 import java.security.Key;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 
 @Slf4j
@@ -33,7 +33,7 @@ public class AuthTokenProvider {
             Claims claims = authToken.getTokenClaims();
 
             System.out.println("claims subject : " + claims.getSubject());
-            User principal = new User(claims.getSubject(), "", null);
+            User principal = new User(claims.getSubject(), "", Collections.emptyList());
 
             return new UsernamePasswordAuthenticationToken(principal, authToken, null);
         }

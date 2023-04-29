@@ -103,19 +103,4 @@ public class SecurityConfig {
     public OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler() {
         return new OAuth2AuthenticationFailureHandler(oAuth2AuthorizationRequestBasedOnCookieRepository());
     }
-
-//    @Bean
-//    public UrlBasedCorsConfigurationSource corsConfigurationSource() {
-//        UrlBasedCorsConfigurationSource corsConfigurationSource = new UrlBasedCorsConfigurationSource();
-//
-//        CorsConfiguration corsConfiguration = new CorsConfiguration();
-//        corsConfiguration.setAllowedHeaders(Arrays.asList(corsProperties.getAllowedHeaders().split(",")));
-//        corsConfiguration.setAllowedMethods(Arrays.asList(corsProperties.getAllowedMethods().split(",")));
-//        corsConfiguration.setAllowedOrigins(Arrays.asList(corsProperties.getAllowedOrigins().split(",")));
-//        corsConfiguration.setAllowCredentials(true);
-//        corsConfiguration.setMaxAge(corsConfiguration.getMaxAge());
-//
-//        corsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
-//        return corsConfigurationSource;
-//    }
 }

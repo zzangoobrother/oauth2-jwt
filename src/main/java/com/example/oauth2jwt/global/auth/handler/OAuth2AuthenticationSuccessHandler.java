@@ -69,6 +69,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         ProviderType providerType = ProviderType.valueOf(authToken.getAuthorizedClientRegistrationId().toUpperCase());
 
         OidcUser user = (OidcUser) authentication.getPrincipal();
+
         OAuth2UserInfo userInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(providerType, user.getAttributes());
 
         Date now = new Date();
@@ -78,8 +79,10 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         AuthToken refreshToken = tokenProvider.createAuthToken(appProperties.getAuth().getTokenSecret(), new Date(now.getTime() + refreshTokenExpiry));
 
-        UserRefreshToken userRefreshToken = userRefreshTokenRepository.findByUserId(userInfo.getId()).orElseThrow();
-        if (userRefreshToken != null) {
+        Optional<UserRefreshToken> optionalUserRefreshToken = userRefreshTokenRepository.findByUserId(userInfo.getId());
+        UserRefreshToken userRefreshToken;
+        if (optionalUserRefreshToken.isPresent()) {
+            userRefreshToken = optionalUserRefreshToken.get();
             userRefreshToken.updateRefreshToken(refreshToken.getToken());
         } else {
             userRefreshToken = new UserRefreshToken(userInfo.getId(), refreshToken.getToken());

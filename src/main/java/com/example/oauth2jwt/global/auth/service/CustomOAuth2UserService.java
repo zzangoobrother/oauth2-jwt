@@ -14,6 +14,8 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
@@ -38,9 +40,11 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         ProviderType providerType = ProviderType.valueOf(userRequest.getClientRegistration().getRegistrationId().toUpperCase());
 
         OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(providerType, oAuth2User.getAttributes());
-        User user = userRepository.findByEmail(oAuth2User.getName()).orElseThrow();
+        Optional<User> optionalUser = userRepository.findByEmail(oAuth2UserInfo.getEmail());
+        User user;
 
-        if (user != null) {
+        if (optionalUser.isPresent()) {
+            user = optionalUser.get();
             if (providerType != user.getProviderType()) {
                 throw new OAuthProviderMissMatchException("Looks like you're signed up with " + providerType + " account. Please use your " + user.getProviderType() + " account to login.");
             }
@@ -49,7 +53,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             user = createUser(oAuth2UserInfo, providerType);
         }
 
-        return UserPrincipal.of(user);
+        return UserPrincipal.of(user, oAuth2User.getAttributes());
     }
 
     private User updateUser(User user, OAuth2UserInfo oAuth2UserInfo) {
