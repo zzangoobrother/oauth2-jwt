@@ -35,7 +35,7 @@ public class AuthTokenProvider {
             System.out.println("claims subject : " + claims.getSubject());
             User principal = new User(claims.getSubject(), "", Collections.emptyList());
 
-            return new UsernamePasswordAuthenticationToken(principal, authToken, null);
+            return new UsernamePasswordAuthenticationToken(principal, principal.getPassword(), null);
         }
 
         throw new TokenValidFailedException();

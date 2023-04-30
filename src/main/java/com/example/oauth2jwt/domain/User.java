@@ -35,6 +35,15 @@ public class User {
     @Enumerated(EnumType.STRING)
     private ProviderType providerType;
 
+    public User(String loginId, String username, String password, String email, String profileImageUrl, ProviderType providerType) {
+        this.loginId = loginId;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.profileImageUrl = profileImageUrl;
+        this.providerType = providerType;
+    }
+
     public User(String loginId, String username, String email, String profileImageUrl, ProviderType providerType) {
         this.loginId = loginId;
         this.username = username;
